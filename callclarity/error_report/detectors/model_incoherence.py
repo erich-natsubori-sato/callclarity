@@ -31,7 +31,7 @@ class ModelIncoherenceDetector(AbstractDetector):
     def _get_clean_learning_issues(self):
         # get radius neighbors graph
 
-        model = LogisticRegression(max_iter=400)
+        model = LogisticRegression(max_iter=400, solver = 'saga', n_jobs = -1)
         cl = CleanLearning(model, cv_n_folds=5)
         encoder = LabelEncoder().fit(self.labels)
 
@@ -58,7 +58,7 @@ class ModelIncoherenceDetector(AbstractDetector):
         df = self.input_df.copy()
 
         # Get clusters
-        logger.info(" └ Calculating clusters") 
+        logger.info(" └ Training models") 
         cl_issues = self._get_clean_learning_issues()
         
         n_cl_issues = cl_issues["is_label_issue"].sum()
